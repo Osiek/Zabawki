@@ -94,6 +94,17 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\frame_backward.png" />
+    <Resource Include="Icons\frame_forward.png" />
+    <Resource Include="Icons\graph.png" />
+    <Resource Include="Icons\light_off.png" />
+    <Resource Include="Icons\light_on.png" />
+    <Resource Include="Icons\minus_sign.png" />
+    <Resource Include="Icons\pause.png" />
+    <Resource Include="Icons\play.png" />
+    <Resource Include="Icons\plus_sign.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
