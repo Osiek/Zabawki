@@ -1,0 +1,31 @@
+﻿<Window x:Class="Zabawki.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Samolocik" Height="480" Width="640">
+    <StackPanel>
+        <Menu Height="25px"  Padding="2px" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save view?" />
+            </MenuItem>
+            <MenuItem Header="Model">
+                <MenuItem Header="Load 3D model"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Animation">
+                <MenuItem Header="Load movement file"  Click="loadMovementFile_Click"/>
+                <MenuItem Header="Edit movement file" />
+                <MenuItem Header="Create new movement file" />
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25px" />
+            </Grid.RowDefinitions>
+        </Grid>
+    </StackPanel>
+
+</Window>
