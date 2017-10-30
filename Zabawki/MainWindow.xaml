@@ -59,7 +59,7 @@
         <Viewport3D Grid.Row="3" Name="viewport3D1">
 
             <Viewport3D.Camera>
-                <PerspectiveCamera x:Name = "camMain" Position = "7 5 4" LookDirection = "-6 -5 -5" UpDirection="0 0 1">
+                <PerspectiveCamera x:Name = "camMain" Position = "7 5 4" LookDirection = "-6 -5 -5" UpDirection="0 1 0">
                 </PerspectiveCamera>
             </Viewport3D.Camera>
 
