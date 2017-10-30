@@ -93,7 +93,9 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Used_resources.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\frame_backward.png" />
     <Resource Include="Icons\frame_forward.png" />
