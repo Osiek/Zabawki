@@ -15,7 +15,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid MouseWheel="Grid_MouseWheel">
+    <Grid MouseWheel="Grid_MouseWheel" MouseUp="Grid_MouseUp" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
@@ -56,29 +56,32 @@
             <Image Source="/Icons/plus_sign.png" Width="30px" Height="30px"/>
             <Image Source="/Icons/minus_sign.png" Width="30px" Height="30px"/>
         </StackPanel>
-        <Viewport3D Grid.Row="3" Name="viewport3D1">
+        <Border Background="Aqua" Grid.Row="3">
+            <Viewport3D Name="viewport3D1">
 
-            <Viewport3D.Camera>
-                <PerspectiveCamera x:Name = "camMain" Position = "0.5 0.5 5" LookDirection = "-0.5 -0.5 -5" UpDirection="0 1 0" FieldOfView="120">
-                </PerspectiveCamera>
-            </Viewport3D.Camera>
+                <Viewport3D.Camera>
+                    <PerspectiveCamera x:Name = "camMain" Position = "0.5 0.5 5" LookDirection = "-0.5 -0.5 -5" UpDirection="0 1 0" FieldOfView="120">
+                    </PerspectiveCamera>
+                </Viewport3D.Camera>
 
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <DirectionalLight x:Name = "dirLightMain" Direction = "-1,-1,-1">
-                    </DirectionalLight>
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
+                <ModelVisual3D>
+                    <ModelVisual3D.Content>
+                        <DirectionalLight x:Name = "dirLightMain" Direction = "-1,-1,-1" Color="red">
+                        </DirectionalLight>
+                    </ModelVisual3D.Content>
+                </ModelVisual3D>
 
-            <ModelVisual3D x:Name = "modelPatryk">
-                <ModelVisual3D.Content>
-                    <Model3DGroup x:Name="group">
-                        <AmbientLight Color="DarkGray" />
-                        <DirectionalLight Color="White" Direction="-5,-5,-7" />
-                    </Model3DGroup>
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
-        </Viewport3D>
+                <ModelVisual3D x:Name = "modelPatryk">
+                    <ModelVisual3D.Content>
+                        <Model3DGroup x:Name="group">
+                            <AmbientLight Color="DarkGray" />
+                            <DirectionalLight Color="White" Direction="-5,-5,-7" />
+                        </Model3DGroup>
+                    </ModelVisual3D.Content>
+                </ModelVisual3D>
+            </Viewport3D>
+        </Border>
+        
         <TextBlock Background="Gray" Grid.Row="4">Miejsce na wykres jakis tam</TextBlock>
         <StatusBar Grid.Row="5">
             <StatusBarItem>

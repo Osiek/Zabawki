@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using System.IO;
 using System.Windows.Media.Media3D;
+using System.Windows.Media.Animation;
 
 namespace Zabawki
 {
@@ -23,6 +24,8 @@ namespace Zabawki
     public partial class MainWindow : Window
     {
         private GeometryModel3D mGeometry;
+        private bool mDown;
+        private Point mLastPos;
 
 
         public MainWindow()
@@ -102,12 +105,12 @@ namespace Zabawki
             mesh.TriangleIndices.Add(7);
 
             //bottom
-            mesh.TriangleIndices.Add(0);
+            mesh.TriangleIndices.Add(5);
+            mesh.TriangleIndices.Add(1);
+            mesh.TriangleIndices.Add(4);
             mesh.TriangleIndices.Add(4);
             mesh.TriangleIndices.Add(1);
-            mesh.TriangleIndices.Add(1);
-            mesh.TriangleIndices.Add(3);
-            mesh.TriangleIndices.Add(5);
+            mesh.TriangleIndices.Add(0);
 
             //top
             mesh.TriangleIndices.Add(2);
@@ -120,6 +123,26 @@ namespace Zabawki
             mGeometry = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.YellowGreen));
             mGeometry.Transform = new Transform3DGroup();
             group.Children.Add(mGeometry);
+
+            //Animacja próby
+            NameScope.SetNameScope(this, new NameScope());
+            this.RegisterName("MyAnimatedObject", mGeometry);
+
+            PointAnimation myAnim = new PointAnimation();
+            myAnim.Duration = TimeSpan.FromSeconds(5);
+            myAnim.RepeatBehavior = RepeatBehavior.Forever;
+            myAnim.From = new Point(0, 0);
+            myAnim.To = new Point(10, 0);
+
+
+            Storyboard.SetTargetName(myAnim, "animatedObject");
+            Storyboard.SetTargetProperty(myAnim,
+                new PropertyPath(mGeometry.Transform));
+
+            Storyboard objectStoryboard = new Storyboard();
+            objectStoryboard.Children.Add(myAnim);
+            objectStoryboard.Begin(this);
+
         }
 
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -128,6 +151,64 @@ namespace Zabawki
                 camMain.Position.X,
                 camMain.Position.Y,
                 camMain.Position.Z - e.Delta / 250D);
+        }
+
+        private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            mDown = false;
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton != MouseButtonState.Pressed) return;
+            mDown = true;
+            Point pos = Mouse.GetPosition(viewport3D1);
+            mLastPos = new Point(pos.X - viewport3D1.ActualWidth / 2, viewport3D1.ActualHeight / 2 - pos.Y);
+        }
+
+        private void Grid_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (!mDown) return;
+            Point pos = Mouse.GetPosition(viewport3D1);
+            Point actualPos = new Point(pos.X - viewport3D1.ActualWidth / 2,
+            viewport3D1.ActualHeight / 2 - pos.Y);
+            double dx = actualPos.X - mLastPos.X;
+            double dy = actualPos.Y - mLastPos.Y;
+            double mouseAngle = 0;
+
+            if(dx != 0 && dy != 0)
+            {
+                mouseAngle = Math.Asin(Math.Abs(dy) / Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2)));
+                if (dx < 0 && dy > 0) mouseAngle += Math.PI / 2;
+                else if (dx < 0 && dy < 0) mouseAngle += Math.PI;
+                else if (dx > 0 && dy < 0) mouseAngle += Math.PI * 1.5;
+
+            }
+            else if(dx == 0 && dy != 0)
+            {
+                mouseAngle = Math.Sign(dy) > 0 ? Math.PI / 2 : Math.PI * 1.5;
+            }
+            else if(dx != 0 && dy == 0)
+            {
+                mouseAngle = Math.Sign(dx) > 0 ? 0 : Math.PI;
+            }
+
+            double axisAngle = mouseAngle + Math.PI / 2;
+
+            Vector3D axis = new Vector3D(
+                Math.Cos(axisAngle) * 4,
+                Math.Sin(axisAngle) * 4, 0);
+
+            double rotation = 0.02 *
+                Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
+
+            Transform3DGroup group = mGeometry.Transform as Transform3DGroup;
+            QuaternionRotation3D r =
+                new QuaternionRotation3D(
+                    new Quaternion(axis, rotation * 180 / Math.PI));
+            group.Children.Add(new RotateTransform3D(r));
+
+            mLastPos = actualPos;
         }
     }
 }
