@@ -124,25 +124,6 @@ namespace Zabawki
             mGeometry.Transform = new Transform3DGroup();
             group.Children.Add(mGeometry);
 
-            //Animacja próby
-            NameScope.SetNameScope(this, new NameScope());
-            this.RegisterName("MyAnimatedObject", mGeometry);
-
-            PointAnimation myAnim = new PointAnimation();
-            myAnim.Duration = TimeSpan.FromSeconds(5);
-            myAnim.RepeatBehavior = RepeatBehavior.Forever;
-            myAnim.From = new Point(0, 0);
-            myAnim.To = new Point(10, 0);
-
-
-            Storyboard.SetTargetName(myAnim, "animatedObject");
-            Storyboard.SetTargetProperty(myAnim,
-                new PropertyPath(mGeometry.Transform));
-
-            Storyboard objectStoryboard = new Storyboard();
-            objectStoryboard.Children.Add(myAnim);
-            objectStoryboard.Begin(this);
-
         }
 
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -209,6 +190,28 @@ namespace Zabawki
             group.Children.Add(new RotateTransform3D(r));
 
             mLastPos = actualPos;
+        }
+
+        private void Grid_KeyDown(object sender, KeyEventArgs e)
+        {
+            int klawisz = (int)e.Key;
+            if (e.Key != Key.Up || e.Key != Key.Down || e.Key != Key.Left || e.Key != Key.Right) System.Console.WriteLine(e.Key.ToString());
+
+            switch(e.Key)
+            {
+                case Key.Left:
+                    camMain.Position = new Point3D(camMain.Position.X + 0.5, camMain.Position.Y, camMain.Position.Z);
+                    break;
+                case Key.Right:
+                    camMain.Position = new Point3D(camMain.Position.X - 0.5, camMain.Position.Y, camMain.Position.Z);
+                    break;
+                case Key.Up:
+                    camMain.Position = new Point3D(camMain.Position.X, camMain.Position.Y - 0.5, camMain.Position.Z);
+                    break;
+                case Key.Down:
+                    camMain.Position = new Point3D(camMain.Position.X, camMain.Position.Y + 0.5, camMain.Position.Z);
+                    break;
+            }
         }
     }
 }
