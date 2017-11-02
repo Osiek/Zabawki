@@ -121,9 +121,41 @@ namespace Zabawki
             mesh.TriangleIndices.Add(7);
 
             mGeometry = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.YellowGreen));
-            mGeometry.Transform = new Transform3DGroup();
+            //mGeometry.Transform = new Transform3DGroup();
+            var MyTranslateTransform = new TranslateTransform3D();
+            this.RegisterName("myTranslateTransform", MyTranslateTransform);
+            mGeometry.Transform = MyTranslateTransform;
             group.Children.Add(mGeometry);
 
+            //Próba animacaj
+            DoubleAnimation x = new DoubleAnimation();
+            x.From = -10;
+            x.To = 10;
+            x.Duration = TimeSpan.FromSeconds(3);
+            x.RepeatBehavior = RepeatBehavior.Forever;
+
+            DoubleAnimation y = new DoubleAnimation();
+            y.From = 10;
+            y.To = -15;
+            y.Duration = TimeSpan.FromSeconds(3);
+            y.RepeatBehavior = RepeatBehavior.Forever;
+
+            Storyboard.SetTargetName(x, "myTranslateTransform");
+            Storyboard.SetTargetProperty(x, new PropertyPath(TranslateTransform3D.OffsetXProperty));
+
+            Storyboard.SetTargetName(y, "myTranslateTransform");
+            Storyboard.SetTargetProperty(y, new PropertyPath(TranslateTransform3D.OffsetYProperty));
+
+            Storyboard sb = new Storyboard();
+            sb.Children.Add(x);
+            sb.Children.Add(y);
+            sb.Completed += sb_Completed;
+            sb.Begin(this);
+        }
+
+        void sb_Completed(object sender, EventArgs e)
+        {
+            Console.WriteLine("Completed.");
         }
 
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -136,60 +168,16 @@ namespace Zabawki
 
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            mDown = false;
+
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton != MouseButtonState.Pressed) return;
-            mDown = true;
-            Point pos = Mouse.GetPosition(viewport3D1);
-            mLastPos = new Point(pos.X - viewport3D1.ActualWidth / 2, viewport3D1.ActualHeight / 2 - pos.Y);
+
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!mDown) return;
-            Point pos = Mouse.GetPosition(viewport3D1);
-            Point actualPos = new Point(pos.X - viewport3D1.ActualWidth / 2,
-            viewport3D1.ActualHeight / 2 - pos.Y);
-            double dx = actualPos.X - mLastPos.X;
-            double dy = actualPos.Y - mLastPos.Y;
-            double mouseAngle = 0;
-
-            if(dx != 0 && dy != 0)
-            {
-                mouseAngle = Math.Asin(Math.Abs(dy) / Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2)));
-                if (dx < 0 && dy > 0) mouseAngle += Math.PI / 2;
-                else if (dx < 0 && dy < 0) mouseAngle += Math.PI;
-                else if (dx > 0 && dy < 0) mouseAngle += Math.PI * 1.5;
-
-            }
-            else if(dx == 0 && dy != 0)
-            {
-                mouseAngle = Math.Sign(dy) > 0 ? Math.PI / 2 : Math.PI * 1.5;
-            }
-            else if(dx != 0 && dy == 0)
-            {
-                mouseAngle = Math.Sign(dx) > 0 ? 0 : Math.PI;
-            }
-
-            double axisAngle = mouseAngle + Math.PI / 2;
-
-            Vector3D axis = new Vector3D(
-                Math.Cos(axisAngle) * 4,
-                Math.Sin(axisAngle) * 4, 0);
-
-            double rotation = 0.02 *
-                Math.Sqrt(Math.Pow(dx, 2) + Math.Pow(dy, 2));
-
-            Transform3DGroup group = mGeometry.Transform as Transform3DGroup;
-            QuaternionRotation3D r =
-                new QuaternionRotation3D(
-                    new Quaternion(axis, rotation * 180 / Math.PI));
-            group.Children.Add(new RotateTransform3D(r));
-
-            mLastPos = actualPos;
         }
 
         private void Grid_KeyDown(object sender, KeyEventArgs e)
@@ -200,16 +188,16 @@ namespace Zabawki
             switch(e.Key)
             {
                 case Key.Left:
-                    camMain.Position = new Point3D(camMain.Position.X + 0.5, camMain.Position.Y, camMain.Position.Z);
-                    break;
-                case Key.Right:
                     camMain.Position = new Point3D(camMain.Position.X - 0.5, camMain.Position.Y, camMain.Position.Z);
                     break;
+                case Key.Right:
+                    camMain.Position = new Point3D(camMain.Position.X + 0.5, camMain.Position.Y, camMain.Position.Z);
+                    break;
                 case Key.Up:
-                    camMain.Position = new Point3D(camMain.Position.X, camMain.Position.Y - 0.5, camMain.Position.Z);
+                    camMain.Position = new Point3D(camMain.Position.X, camMain.Position.Y + 0.5, camMain.Position.Z);
                     break;
                 case Key.Down:
-                    camMain.Position = new Point3D(camMain.Position.X, camMain.Position.Y + 0.5, camMain.Position.Z);
+                    camMain.Position = new Point3D(camMain.Position.X, camMain.Position.Y - 0.5, camMain.Position.Z);
                     break;
             }
         }

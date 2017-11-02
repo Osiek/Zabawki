@@ -60,7 +60,7 @@
             <Viewport3D Name="viewport3D1">
 
                 <Viewport3D.Camera>
-                    <PerspectiveCamera x:Name = "camMain" Position = "0.5 0.5 5" LookDirection = "-0.5 -0.5 -5" UpDirection="0 1 0" FieldOfView="45">
+                    <PerspectiveCamera x:Name = "camMain" Position = "0.5 5 50" LookDirection = "-0.5 -0.5 -5" UpDirection="0 1 0" FieldOfView="45">
                     </PerspectiveCamera>
                 </Viewport3D.Camera>
 
