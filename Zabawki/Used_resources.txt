@@ -1,1 +1,3 @@
 ﻿Icons: https://www.iconfinder.com/iconsets/glyphpack
+Rysowanie obiektów, używanie meshy, w jakiej kolejności, itd.: https://www.codeproject.com/Articles/23332/WPF-D-Primer
+Rotacja kamery: http://ericsink.com/wpf3d/9_Rotate_Zoom.html
