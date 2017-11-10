@@ -106,7 +106,7 @@ namespace Zabawki
             sb.Children.Add(x);
             sb.Children.Add(y);
             sb.Completed += sb_Completed;
-            //sb.Begin(this);
+            sb.Begin(this);
         }
 
         void sb_Completed(object sender, EventArgs e)
