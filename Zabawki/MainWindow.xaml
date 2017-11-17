@@ -32,7 +32,7 @@
                 <MenuItem Header="Load 3D model"></MenuItem>
             </MenuItem>
             <MenuItem Header="Animation">
-                <MenuItem Header="Load movement file" />
+                <MenuItem Header="Load movement file" Click="loadMovementFile_Click" />
                 <MenuItem Header="Edit movement file" />
                 <MenuItem Header="Create new movement file" />
             </MenuItem>

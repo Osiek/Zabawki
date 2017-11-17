@@ -52,24 +52,9 @@ namespace Zabawki
 
         private void loadMovementFile_Click(object sender, RoutedEventArgs e)
         {
-            string filename;
-            string initialDirectory = "H:\\";
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            if (Directory.Exists(initialDirectory))
-            {
-                fileDialog.InitialDirectory = initialDirectory;
-            }
-            else
-            {
-                fileDialog.InitialDirectory = "C:\\";
-            } 
-            
-            Nullable<bool> result = fileDialog.ShowDialog();
-            if (result == true)
-            {
-                filename = fileDialog.FileName;
-            }
-
+            File file = new File();
+            string path = file.getPathFromDialogWindow();
+            file.open(path);
         }
 
         public void build3DThing()
