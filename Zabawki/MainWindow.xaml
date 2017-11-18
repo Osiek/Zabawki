@@ -20,8 +20,8 @@
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="5*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Height="25px"  Padding="2px" HorizontalAlignment="Stretch" VerticalAlignment="Top">
@@ -46,7 +46,14 @@
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="10px 2px 0 2px">
                 <Image Source="/Icons/frame_backward.png" Width="30px" Height="30px" Cursor="Hand"/>
-                <Image Source="/Icons/play.png" Width="30px" Height="30px"/>
+                <Button Width="30" Height="30" Click="playButton_Click">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/Icons/play.png" Width="30px" Height="30px"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                
                 <Image Source="/Icons/frame_forward.png" Width="30px" Height="30px"/>
                 <TextBlock Text="Starting frame:"/>
                 <TextBox Width="50px"/>

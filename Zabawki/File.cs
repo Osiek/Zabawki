@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Zabawki.Model;
 
 namespace Zabawki
 {
@@ -11,23 +12,21 @@ namespace Zabawki
     {
         string filePath;
         List<string> fileLines;
+        List<_3DCoordinates> coordinates;
 
         public File()
         {
             fileLines = new List<string>();
+            coordinates = new List<_3DCoordinates>();
         }
 
-        public List<string> open(string path)
+        public List<string> open()
         {
-            using(FileStream fs = System.IO.File.Open(path, FileMode.Open))
-            {
-                byte[] b = new byte[1024];
-                UTF8Encoding temp = new UTF8Encoding(true);
+            string [] readText = System.IO.File.ReadAllLines(filePath);
 
-                while(fs.Read(b,0,b.Length) > 0)
-                {
-                    fileLines.Add(temp.GetString(b));
-                }
+            foreach(string s in readText)
+            {
+                fileLines.Add(s);
             }
 
             return fileLines;
@@ -35,7 +34,7 @@ namespace Zabawki
 
         public string getPathFromDialogWindow()
         {
-            string initialDirectory = "H:\\";
+            string initialDirectory = @"E:\Google Drive\Uczelnia\Semestr 7\GUI WPF\Zabawki";
             OpenFileDialog fileDialog = new OpenFileDialog();
             if (Directory.Exists(initialDirectory))
             {
@@ -47,11 +46,24 @@ namespace Zabawki
             }
 
             Nullable<bool> result = fileDialog.ShowDialog();
-            if(result == true) return this.filePath = fileDialog.FileName;
+            if(result == true) return filePath = fileDialog.FileName;
 
             return "0;0;0;0;0;0;0";
         }
 
+        public void read3DCoordinates()
+        {
+            foreach(var line in fileLines)
+            {
+                var exploded = line.Split(';');
+                coordinates.Add( new _3DCoordinates( Int32.Parse(exploded[0]), Int32.Parse(exploded[1]), Int32.Parse(exploded[2]) ) );
+            }
+        }
+
+        public List<_3DCoordinates> get3DCoordinates()
+        {
+            return coordinates;
+        }
 
     }
 }

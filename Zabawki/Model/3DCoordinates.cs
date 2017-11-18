@@ -7,9 +7,9 @@ namespace Zabawki.Model
 {
     class _3DCoordinates
     {
-        private int x { get; set; }
-        private int y { get; set; }
-        private int z { get; set; }
+        public int x { get; set; }
+        public int y { get; set; }
+        public int z { get; set; }
         private int rotX { get; set; }
         private int rotY { get; set; }
         private int rotZ { get; set; }
@@ -23,6 +23,13 @@ namespace Zabawki.Model
             this.rotY = rotY;
             this.rotZ = rotZ;
             this.rotAngle = rotAngle;
+        }
+
+        public _3DCoordinates(int x, int y, int z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
 
         public void lol()

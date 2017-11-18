@@ -25,20 +25,24 @@ namespace Zabawki
     public partial class MainWindow : Window
     {
         private GeometryModel3D mGeometry;
-        private bool mDown;
-        private Point mLastPos;
+        private List<_3DCoordinates> myAnimationCoords;
         private RotateTransform3D myRotateTransformX;
         private RotateTransform3D myRotateTransformY;
         private AxisAngleRotation3D myRotX;
         private AxisAngleRotation3D myRotY;
         Transform3DGroup cameraRotationsGroup;
+        AnimationClock clock;
+        Storyboard sb;
 
         public MainWindow()
         {
             InitializeComponent();
             build3DThing();
 
+            sb = new Storyboard();
             cameraRotationsGroup = new Transform3DGroup();
+
+
 
             myRotX = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 10);
             myRotateTransformX = new RotateTransform3D(myRotX);
@@ -54,7 +58,10 @@ namespace Zabawki
         {
             File file = new File();
             string path = file.getPathFromDialogWindow();
-            file.open(path);
+            file.open();
+            file.read3DCoordinates();
+            myAnimationCoords = file.get3DCoordinates();
+            storyboardAnimationFromFile();
         }
 
         public void build3DThing()
@@ -70,10 +77,10 @@ namespace Zabawki
 
             //Próba animacaj
             DoubleAnimation x = new DoubleAnimation();
-            x.From = -10;
+            x.From = 0;
             x.To = 10;
-            x.Duration = TimeSpan.FromSeconds(10);
-            x.RepeatBehavior = RepeatBehavior.Forever;
+            x.Duration = TimeSpan.FromSeconds(5);
+            //x.RepeatBehavior = RepeatBehavior.Forever;
 
             DoubleAnimation y = new DoubleAnimation();
             y.From = 10;
@@ -81,22 +88,114 @@ namespace Zabawki
             y.Duration = TimeSpan.FromSeconds(10);
             y.RepeatBehavior = RepeatBehavior.Forever;
 
-            Storyboard.SetTargetName(x, "myTranslateTransform");
-            Storyboard.SetTargetProperty(x, new PropertyPath(TranslateTransform3D.OffsetXProperty));
+            clock = x.CreateClock();
+            //mGeometry.ApplyAnimationClock(TranslateTransform3D.OffsetXProperty, clock);
 
-            Storyboard.SetTargetName(y, "myTranslateTransform");
-            Storyboard.SetTargetProperty(y, new PropertyPath(TranslateTransform3D.OffsetYProperty));
+            //Storyboard.SetTargetName(x, "myTranslateTransform");
+            //Storyboard.SetTargetProperty(x, new PropertyPath(TranslateTransform3D.OffsetXProperty));
 
-            Storyboard sb = new Storyboard();
-            sb.Children.Add(x);
-            sb.Children.Add(y);
+            //Storyboard.SetTargetName(y, "myTranslateTransform");
+            //Storyboard.SetTargetProperty(y, new PropertyPath(TranslateTransform3D.OffsetYProperty));
+
+            sb = new Storyboard();
+
+            var xDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
+            var yDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
+            var zDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
+
+            myAnimationCoords = new List<_3DCoordinates>();
+            myAnimationCoords.Add(new _3DCoordinates(0, 0, 0));
+            myAnimationCoords.Add(new _3DCoordinates(3, 0, 0));
+            myAnimationCoords.Add(new _3DCoordinates(5, 5, 0));
+            myAnimationCoords.Add(new _3DCoordinates(10, 0, 0));
+
+            int czas = 0;
+            foreach (var coord in myAnimationCoords)
+            {
+                var xkeyFrame = new LinearDoubleKeyFrame();
+                var ykeyFrame = new LinearDoubleKeyFrame();
+                var zkeyFrame = new LinearDoubleKeyFrame();
+
+                xkeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(czas));
+                xkeyFrame.Value = coord.x;
+
+                ykeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(czas));
+                ykeyFrame.Value = coord.y;
+
+                zkeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(czas));
+                zkeyFrame.Value = coord.z;
+
+                xDoubleAnimationUsingKeyFrames.KeyFrames.Add(xkeyFrame);
+                yDoubleAnimationUsingKeyFrames.KeyFrames.Add(ykeyFrame);
+                zDoubleAnimationUsingKeyFrames.KeyFrames.Add(zkeyFrame);
+                czas += 1;
+            }
+
+            Storyboard.SetTargetName(xDoubleAnimationUsingKeyFrames, "myTranslateTransform");
+            Storyboard.SetTargetProperty(xDoubleAnimationUsingKeyFrames, new PropertyPath(TranslateTransform3D.OffsetXProperty));
+            Storyboard.SetTargetName(yDoubleAnimationUsingKeyFrames, "myTranslateTransform");
+            Storyboard.SetTargetProperty(yDoubleAnimationUsingKeyFrames, new PropertyPath(TranslateTransform3D.OffsetYProperty));
+            Storyboard.SetTargetName(zDoubleAnimationUsingKeyFrames, "myTranslateTransform");
+            Storyboard.SetTargetProperty(zDoubleAnimationUsingKeyFrames, new PropertyPath(TranslateTransform3D.OffsetZProperty));
+            //Storyboard.SetTargetProperty(x, new PropertyPath(TranslateTransform3D.OffsetXProperty));
+
+            //sb.Children.Add(x);
+            //sb.Children.Add(y);
+
+            sb.Children.Add(xDoubleAnimationUsingKeyFrames);
+            sb.Children.Add(yDoubleAnimationUsingKeyFrames);
+            sb.Children.Add(zDoubleAnimationUsingKeyFrames);
             sb.Completed += sb_Completed;
-            sb.Begin(this);
+            sb.Begin(this, true);
         }
 
         void sb_Completed(object sender, EventArgs e)
         {
             Console.WriteLine("Storyboard completed.");
+        }
+
+        private void storyboardAnimationFromFile()
+        {
+            sb = new Storyboard();
+
+            var xDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
+            var yDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
+            var zDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
+
+            int czas = 0;
+            foreach (var coord in myAnimationCoords)
+            {
+                var xkeyFrame = new LinearDoubleKeyFrame();
+                var ykeyFrame = new LinearDoubleKeyFrame();
+                var zkeyFrame = new LinearDoubleKeyFrame();
+
+                xkeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(czas));
+                xkeyFrame.Value = coord.x;
+
+                ykeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(czas));
+                ykeyFrame.Value = coord.y;
+
+                zkeyFrame.KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromSeconds(czas));
+                zkeyFrame.Value = coord.z;
+
+                xDoubleAnimationUsingKeyFrames.KeyFrames.Add(xkeyFrame);
+                yDoubleAnimationUsingKeyFrames.KeyFrames.Add(ykeyFrame);
+                zDoubleAnimationUsingKeyFrames.KeyFrames.Add(zkeyFrame);
+                czas += 2;
+            }
+
+            Storyboard.SetTargetName(xDoubleAnimationUsingKeyFrames, "myTranslateTransform");
+            Storyboard.SetTargetProperty(xDoubleAnimationUsingKeyFrames, new PropertyPath(TranslateTransform3D.OffsetXProperty));
+            Storyboard.SetTargetName(yDoubleAnimationUsingKeyFrames, "myTranslateTransform");
+            Storyboard.SetTargetProperty(yDoubleAnimationUsingKeyFrames, new PropertyPath(TranslateTransform3D.OffsetYProperty));
+            Storyboard.SetTargetName(zDoubleAnimationUsingKeyFrames, "myTranslateTransform");
+            Storyboard.SetTargetProperty(zDoubleAnimationUsingKeyFrames, new PropertyPath(TranslateTransform3D.OffsetZProperty));
+
+            sb.Children.Add(xDoubleAnimationUsingKeyFrames);
+            sb.Children.Add(yDoubleAnimationUsingKeyFrames);
+            sb.Children.Add(zDoubleAnimationUsingKeyFrames);
+            sb.Completed += sb_Completed;
+            sb.Begin(this, true);
         }
 
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -163,6 +262,11 @@ namespace Zabawki
                     camMain.Position = new Point3D(camMain.Position.X, camMain.Position.Y - 0.5, camMain.Position.Z);
                     break;
             }
+        }
+
+        private void playButton_Click(object sender, RoutedEventArgs e)
+        {
+            sb.Seek(TimeSpan.FromSeconds(0));
         }
     }
 }
