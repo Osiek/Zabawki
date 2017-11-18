@@ -136,10 +136,10 @@ namespace Zabawki
                         myRotX.Angle += 10;
                         break;
                     case Key.Up:
-                        myRotY.Angle -= 10;
+                        myRotY.Angle += 10;
                         break;
                     case Key.Down:
-                        myRotY.Angle += 10;
+                        myRotY.Angle -= 10;
                         break;
                 }
 

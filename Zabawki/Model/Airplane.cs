@@ -33,32 +33,32 @@ namespace Zabawki.Model
         private void definePoints()
         {
             //Lewa sciana samolotu
-            mesh.Positions.Add(new Point3D(0,0,0)); //pkt. 1
-            mesh.Positions.Add(new Point3D(5,0,0)); //pkt. 2
-            mesh.Positions.Add(new Point3D(1,1,0)); //pkt. 3
-            mesh.Positions.Add(new Point3D(5,1,0)); //pkt. 4
-            mesh.Positions.Add(new Point3D(4.5,1,0)); //pkt. 5
-            mesh.Positions.Add(new Point3D(5,1.5,0)); //pkt. 6
+            mesh.Positions.Add(new Point3D(0,0,0)); //pkt. 0
+            mesh.Positions.Add(new Point3D(5,0,0)); //pkt. 1
+            mesh.Positions.Add(new Point3D(1,1,0)); //pkt. 2
+            mesh.Positions.Add(new Point3D(5,1,0)); //pkt. 3
+            mesh.Positions.Add(new Point3D(4.5,1,0)); //pkt. 4
+            mesh.Positions.Add(new Point3D(5,1.5,0)); //pkt. 5
 
             //Prawa sciana samolotu
-            mesh.Positions.Add(new Point3D(0, 0, 1)); //pkt. 1 tył - 7
-            mesh.Positions.Add(new Point3D(5, 0, 1)); //pkt. 2 tył - 8
-            mesh.Positions.Add(new Point3D(1, 1, 1)); //pkt. 3 tył - 9
-            mesh.Positions.Add(new Point3D(5, 1, 1)); //pkt. 4 tył - 10
-            mesh.Positions.Add(new Point3D(4.5, 1, 1)); //pkt. 5 tył - 11
-            mesh.Positions.Add(new Point3D(5, 1.5, 1)); //pkt. 6 tył - 12
+            mesh.Positions.Add(new Point3D(0, 0, 1)); //pkt. 1 tył - 6
+            mesh.Positions.Add(new Point3D(5, 0, 1)); //pkt. 2 tył - 7
+            mesh.Positions.Add(new Point3D(1, 1, 1)); //pkt. 3 tył - 8
+            mesh.Positions.Add(new Point3D(5, 1, 1)); //pkt. 4 tył - 9
+            mesh.Positions.Add(new Point3D(4.5, 1, 1)); //pkt. 5 tył - 10
+            mesh.Positions.Add(new Point3D(5, 1.5, 1)); //pkt. 6 tył - 11
 
             //Lewe skrzydlo
-            mesh.Positions.Add(new Point3D(3, 0, 0)); //pkt. 13
-            mesh.Positions.Add(new Point3D(4, 0, 0)); //pkt. 14
-            mesh.Positions.Add(new Point3D(3, 0, -4)); //pkt. 15
-            mesh.Positions.Add(new Point3D(4, 0, -4)); //pkt. 16
+            mesh.Positions.Add(new Point3D(3, 0, 0)); //pkt. 12
+            mesh.Positions.Add(new Point3D(4, 0, 0)); //pkt. 13
+            mesh.Positions.Add(new Point3D(3, 0, -4)); //pkt. 14
+            mesh.Positions.Add(new Point3D(4, 0, -4)); //pkt. 15
 
             //Prawe skrzydlo
-            mesh.Positions.Add(new Point3D(3, 0, 1)); //pkt. 17
-            mesh.Positions.Add(new Point3D(4, 0, 1)); //pkt. 18
-            mesh.Positions.Add(new Point3D(3, 0, 5)); //pkt. 19
-            mesh.Positions.Add(new Point3D(4, 0, 5)); //pkt. 20
+            mesh.Positions.Add(new Point3D(3, 0, 1)); //pkt. 16
+            mesh.Positions.Add(new Point3D(4, 0, 1)); //pkt. 17
+            mesh.Positions.Add(new Point3D(3, 0, 5)); //pkt. 18
+            mesh.Positions.Add(new Point3D(4, 0, 5)); //pkt. 19
         }
 
         private void makeMesh()
@@ -126,6 +126,36 @@ namespace Zabawki.Model
             mesh.TriangleIndices.Add(9);
             mesh.TriangleIndices.Add(11);
 
+            //Skrzydlo gora
+            mesh.TriangleIndices.Add(12);
+            mesh.TriangleIndices.Add(14);
+            mesh.TriangleIndices.Add(13);
+            mesh.TriangleIndices.Add(13);
+            mesh.TriangleIndices.Add(14);
+            mesh.TriangleIndices.Add(15);
+
+            //Skrzydlo dol
+            mesh.TriangleIndices.Add(14);
+            mesh.TriangleIndices.Add(12);
+            mesh.TriangleIndices.Add(13);
+            mesh.TriangleIndices.Add(13);
+            mesh.TriangleIndices.Add(15);
+            mesh.TriangleIndices.Add(14);
+
+            //Skrzydlo gora
+            mesh.TriangleIndices.Add(18);
+            mesh.TriangleIndices.Add(16);
+            mesh.TriangleIndices.Add(19);
+            mesh.TriangleIndices.Add(19);
+            mesh.TriangleIndices.Add(16);
+            mesh.TriangleIndices.Add(17);
+
+            mesh.TriangleIndices.Add(16);
+            mesh.TriangleIndices.Add(18);
+            mesh.TriangleIndices.Add(19);
+            mesh.TriangleIndices.Add(19);
+            mesh.TriangleIndices.Add(17);
+            mesh.TriangleIndices.Add(16);
             //mesh.TriangleIndices.Add(4);
             //mesh.TriangleIndices.Add(11);
             //mesh.TriangleIndices.Add(10);
