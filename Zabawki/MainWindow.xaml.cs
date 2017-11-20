@@ -32,17 +32,14 @@ namespace Zabawki
         private AxisAngleRotation3D myRotY;
         Transform3DGroup cameraRotationsGroup;
         AnimationClock clock;
-        Storyboard sb;
+        private Storyboard sb;
 
         public MainWindow()
         {
+            NameScope.SetNameScope(this, new NameScope());
             InitializeComponent();
-            build3DThing();
-
             sb = new Storyboard();
             cameraRotationsGroup = new Transform3DGroup();
-
-
 
             myRotX = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 10);
             myRotateTransformX = new RotateTransform3D(myRotX);
@@ -50,8 +47,11 @@ namespace Zabawki
             myRotateTransformY = new RotateTransform3D(myRotY);
             cameraRotationsGroup.Children.Add(myRotateTransformX);
             cameraRotationsGroup.Children.Add(myRotateTransformY);
-
             camMain.Transform = cameraRotationsGroup;
+
+            build3DThing();
+
+
         }
 
         private void loadMovementFile_Click(object sender, RoutedEventArgs e)
@@ -97,7 +97,8 @@ namespace Zabawki
             //Storyboard.SetTargetName(y, "myTranslateTransform");
             //Storyboard.SetTargetProperty(y, new PropertyPath(TranslateTransform3D.OffsetYProperty));
 
-            sb = new Storyboard();
+            sb.Name = "SamolotSB";
+            this.RegisterName(sb.Name, sb);
 
             var xDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
             var yDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
@@ -141,7 +142,6 @@ namespace Zabawki
 
             //sb.Children.Add(x);
             //sb.Children.Add(y);
-
             sb.Children.Add(xDoubleAnimationUsingKeyFrames);
             sb.Children.Add(yDoubleAnimationUsingKeyFrames);
             sb.Children.Add(zDoubleAnimationUsingKeyFrames);
@@ -156,8 +156,6 @@ namespace Zabawki
 
         private void storyboardAnimationFromFile()
         {
-            sb = new Storyboard();
-
             var xDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
             var yDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
             var zDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
@@ -266,7 +264,7 @@ namespace Zabawki
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            sb.Seek(TimeSpan.FromSeconds(0));
+            sb.Pause(this);
         }
     }
 }
