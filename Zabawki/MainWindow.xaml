@@ -13,6 +13,10 @@
             <Setter Property="TextAlignment" Value="Center"></Setter>
             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"></Setter>
+            <Setter Property="Margin" Value="0 0 5px 0"></Setter>
+        </Style>
     </Window.Resources>
 
     <Grid Name="mainGrid" MouseWheel="Grid_MouseWheel" MouseUp="Grid_MouseUp" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove">
@@ -45,21 +49,28 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="10px 2px 0 2px">
-                <Image Source="/Icons/frame_backward.png" Width="30px" Height="30px" Cursor="Hand"/>
+                <Button Width="30" Height="30" Name="stopButton"  Click="playButton_Click">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/Icons/stop.png" Width="30px" Height="30px"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
                 <Button Width="30" Height="30" Name="playButton"  Click="playButton_Click">
                     <Button.Template>
                         <ControlTemplate>
                             <Image Source="/Icons/play.png" Width="30px" Height="30px"/>
                         </ControlTemplate>
                     </Button.Template>
-
                 </Button>
-                
-                <Image Source="/Icons/frame_forward.png" Width="30px" Height="30px"/>
-                <TextBlock Text="Starting frame:"/>
-                <TextBox Width="50px"/>
+                <Button Width="30" Height="30" Name="pauseButton"  Click="playButton_Click">
+                    <Button.Template>
+                        <ControlTemplate>
+                            <Image Source="/Icons/pause.png" Width="30px" Height="30px"/>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
             </StackPanel>
-            <TextBlock Text="Movement file:" Grid.Column="1" />
         </Grid>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -106,19 +117,10 @@
         <!--#region Pasek statusu-->
         <StatusBar Grid.Row="5">
             <StatusBarItem>
-                <TextBlock>Model:</TextBlock>
+                <TextBlock>Plik ruchu:</TextBlock>
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock x:Name="model_path_text">E:\Google Drive\Uczelnia\Semestr 7\Praca dyplomowa\plik.3d</TextBlock>
-            </StatusBarItem>
-            <StatusBarItem>
-                <Separator></Separator>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock>Current frame:</TextBlock>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock x:Name="current_frame_text">15</TextBlock>
             </StatusBarItem>
         </StatusBar>
         <!--#endregion-->

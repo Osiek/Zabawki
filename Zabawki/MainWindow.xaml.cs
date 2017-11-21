@@ -76,10 +76,12 @@ namespace Zabawki
             group.Children.Add(mGeometry);
 
             //Próba animacaj
-            DoubleAnimation x = new DoubleAnimation();
-            x.From = 0;
-            x.To = 10;
-            x.Duration = TimeSpan.FromSeconds(5);
+            DoubleAnimation x = new DoubleAnimation
+            {
+                From = 0,
+                To = 10,
+                Duration = TimeSpan.FromSeconds(5)
+            };
             //x.RepeatBehavior = RepeatBehavior.Forever;
 
             DoubleAnimation y = new DoubleAnimation();
@@ -264,7 +266,24 @@ namespace Zabawki
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
-            sb.Pause(this);
+            Button btn = (Button)sender;
+            Image lol  = (Image)btn.Template.FindName("playPouseButton", btn);
+            //Image img = (Image)playPauseImage;
+            switch (btn.Name)
+            {
+                case "pauseButton":
+                    sb.Pause(this);
+                    //playPauseImage.Source = "";
+                    break;
+                case "playButton":
+                    sb.Resume(this);
+                    break;
+                case "stopButton":
+                    sb.Pause(this);
+                    sb.Seek(this, TimeSpan.FromMilliseconds(0), TimeSeekOrigin.BeginTime);
+                    break;
+            }
+                
         }
     }
 }
