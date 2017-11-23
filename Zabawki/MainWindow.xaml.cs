@@ -16,6 +16,8 @@ using System.IO;
 using System.Windows.Media.Media3D;
 using System.Windows.Media.Animation;
 using Zabawki.Model;
+using LiveCharts;
+using LiveCharts.Wpf;
 
 namespace Zabawki
 {
@@ -25,6 +27,7 @@ namespace Zabawki
     public partial class MainWindow : Window
     {
         private GeometryModel3D mGeometry;
+        TranslateTransform3D MyTranslateTransform;
         private List<_3DCoordinates> myAnimationCoords;
         private RotateTransform3D myRotateTransformX;
         private RotateTransform3D myRotateTransformY;
@@ -33,6 +36,8 @@ namespace Zabawki
         Transform3DGroup cameraRotationsGroup;
         AnimationClock clock;
         private Storyboard sb;
+        public SeriesCollection SeriesCollection { get; set; }
+        int licznik_punktow_animacji;
 
         public MainWindow()
         {
@@ -45,9 +50,32 @@ namespace Zabawki
             myRotateTransformX = new RotateTransform3D(myRotX);
             myRotY = new AxisAngleRotation3D(new Vector3D(1, 0, 0), 10);
             myRotateTransformY = new RotateTransform3D(myRotY);
+
             cameraRotationsGroup.Children.Add(myRotateTransformX);
             cameraRotationsGroup.Children.Add(myRotateTransformY);
             camMain.Transform = cameraRotationsGroup;
+
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "X",
+                    Values = new ChartValues<double>()
+                },
+                new LineSeries
+                {
+                    Title = "Y",
+                    Values = new ChartValues<double>()
+                },
+                new LineSeries
+                {
+                    Title = "Z",
+                    Values = new ChartValues<double>()
+                }
+            };
+            DataContext = this;
+            licznik_punktow_animacji = 0;
+
 
             build3DThing();
 
@@ -70,7 +98,8 @@ namespace Zabawki
             mGeometry = myPlane.getPlane();
             //mGeometry = new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.YellowGreen));
             //mGeometry.Transform = new Transform3DGroup();
-            var MyTranslateTransform = new TranslateTransform3D();
+            MyTranslateTransform = new TranslateTransform3D();
+            MyTranslateTransform.Changed += showOffsetValues;
             this.RegisterName("myTranslateTransform", MyTranslateTransform);
             mGeometry.Transform = MyTranslateTransform;
             group.Children.Add(mGeometry);
@@ -153,11 +182,33 @@ namespace Zabawki
 
         void sb_Completed(object sender, EventArgs e)
         {
-            Console.WriteLine("Storyboard completed.");
+            Console.WriteLine("Storyboard completed.\nLiczba punktow: {0}", licznik_punktow_animacji);
+        }
+
+        void showOffsetValues(object sender, EventArgs e)
+        {
+            Console.WriteLine("X: {0}, Y: {1}, Z:{2}", MyTranslateTransform.OffsetX, MyTranslateTransform.OffsetY, MyTranslateTransform.OffsetZ);
+            SeriesCollection[0].Values.Add(MyTranslateTransform.OffsetX);
+            SeriesCollection[1].Values.Add(MyTranslateTransform.OffsetY);
+            SeriesCollection[2].Values.Add(MyTranslateTransform.OffsetZ);
+            if(SeriesCollection[0].Values.Count > 30)
+            {
+                SeriesCollection[0].Values.Clear();
+                SeriesCollection[1].Values.Clear();
+                SeriesCollection[2].Values.Clear();
+            }
+
+
+            licznik_punktow_animacji += 1;
         }
 
         private void storyboardAnimationFromFile()
         {
+            licznik_punktow_animacji = 0;
+            SeriesCollection[0].Values.Clear();
+            SeriesCollection[1].Values.Clear();
+            SeriesCollection[2].Values.Clear();
+
             var xDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
             var yDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
             var zDoubleAnimationUsingKeyFrames = new DoubleAnimationUsingKeyFrames();
@@ -181,7 +232,7 @@ namespace Zabawki
                 xDoubleAnimationUsingKeyFrames.KeyFrames.Add(xkeyFrame);
                 yDoubleAnimationUsingKeyFrames.KeyFrames.Add(ykeyFrame);
                 zDoubleAnimationUsingKeyFrames.KeyFrames.Add(zkeyFrame);
-                czas += 2;
+                czas += 1;
             }
 
             Storyboard.SetTargetName(xDoubleAnimationUsingKeyFrames, "myTranslateTransform");
@@ -273,7 +324,6 @@ namespace Zabawki
             {
                 case "pauseButton":
                     sb.Pause(this);
-                    //playPauseImage.Source = "";
                     break;
                 case "playButton":
                     sb.Resume(this);
@@ -281,6 +331,10 @@ namespace Zabawki
                 case "stopButton":
                     sb.Pause(this);
                     sb.Seek(this, TimeSpan.FromMilliseconds(0), TimeSeekOrigin.BeginTime);
+                    SeriesCollection[0].Values.Clear();
+                    SeriesCollection[1].Values.Clear();
+                    SeriesCollection[2].Values.Clear();
+                    licznik_punktow_animacji = 0;
                     break;
             }
                 

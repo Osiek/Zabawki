@@ -1,6 +1,7 @@
 ﻿<Window x:Class="Zabawki.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         Title="Samolocik" Height="720" Width="1280" PreviewKeyDown="Grid_KeyDown">
     <Window.Resources>
         <Style TargetType="TextBlock">
@@ -111,7 +112,7 @@
         <!--#endregion-->
         
         <!--#region Wykres-->
-        <TextBlock Background="Gray" Grid.Row="4">Miejsce na wykres jakis tam</TextBlock>
+        <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="4"/>
         <!--#endregion-->
         
         <!--#region Pasek statusu-->

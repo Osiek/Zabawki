@@ -1,20 +1,31 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zabawki", "Zabawki\Zabawki.csproj", "{FE6AFD3D-F883-42F4-A444-C492D3265666}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE6AFD3D-F883-42F4-A444-C492D3265666}.Debug|x64.ActiveCfg = Debug|x64
+		{FE6AFD3D-F883-42F4-A444-C492D3265666}.Debug|x64.Build.0 = Debug|x64
 		{FE6AFD3D-F883-42F4-A444-C492D3265666}.Debug|x86.ActiveCfg = Debug|x86
 		{FE6AFD3D-F883-42F4-A444-C492D3265666}.Debug|x86.Build.0 = Debug|x86
+		{FE6AFD3D-F883-42F4-A444-C492D3265666}.Release|x64.ActiveCfg = Release|x64
+		{FE6AFD3D-F883-42F4-A444-C492D3265666}.Release|x64.Build.0 = Release|x64
 		{FE6AFD3D-F883-42F4-A444-C492D3265666}.Release|x86.ActiveCfg = Release|x86
 		{FE6AFD3D-F883-42F4-A444-C492D3265666}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90C0F1D3-21EF-415C-BA2C-1F9CA566CD28}
 	EndGlobalSection
 EndGlobal
