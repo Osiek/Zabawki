@@ -37,14 +37,30 @@ namespace Zabawki
         AnimationClock clock;
         private Storyboard sb;
         public SeriesCollection SeriesCollection { get; set; }
+        ChartValues<double> cvX;
+        ChartValues<double> cvY;
+        ChartValues<double> cvZ;
+        double[] valuesX;
+        double[] valuesY;
+        double[] valuesZ;
         int licznik_punktow_animacji;
+        int ARRAY_SIZE = 50;
 
         public MainWindow()
         {
+            
             NameScope.SetNameScope(this, new NameScope());
             InitializeComponent();
             sb = new Storyboard();
             cameraRotationsGroup = new Transform3DGroup();
+
+            cvX = new ChartValues<double>();
+            cvY = new ChartValues<double>();
+            cvZ = new ChartValues<double>();
+
+            valuesX = new double[ARRAY_SIZE];
+            valuesY = new double[ARRAY_SIZE];
+            valuesZ = new double[ARRAY_SIZE];
 
             myRotX = new AxisAngleRotation3D(new Vector3D(0, 1, 0), 10);
             myRotateTransformX = new RotateTransform3D(myRotX);
@@ -60,17 +76,17 @@ namespace Zabawki
                 new LineSeries
                 {
                     Title = "X",
-                    Values = new ChartValues<double>()
+                    Values = cvX
                 },
                 new LineSeries
                 {
                     Title = "Y",
-                    Values = new ChartValues<double>()
+                    Values = cvY
                 },
                 new LineSeries
                 {
                     Title = "Z",
-                    Values = new ChartValues<double>()
+                    Values = cvZ
                 }
             };
             DataContext = this;
@@ -183,21 +199,48 @@ namespace Zabawki
         void sb_Completed(object sender, EventArgs e)
         {
             Console.WriteLine("Storyboard completed.\nLiczba punktow: {0}", licznik_punktow_animacji);
+
+            for(int i = licznik_punktow_animacji - 1; i < ARRAY_SIZE; i++)
+            {
+                valuesX[i] = 0;
+                valuesY[i] = 0;
+                valuesZ[i] = 0;
+            }
+
+            cvX.AddRange(valuesX);
+            cvY.AddRange(valuesY);
+            cvZ.AddRange(valuesZ);
         }
 
         void showOffsetValues(object sender, EventArgs e)
         {
-            Console.WriteLine("X: {0}, Y: {1}, Z:{2}", MyTranslateTransform.OffsetX, MyTranslateTransform.OffsetY, MyTranslateTransform.OffsetZ);
-            SeriesCollection[0].Values.Add(MyTranslateTransform.OffsetX);
-            SeriesCollection[1].Values.Add(MyTranslateTransform.OffsetY);
-            SeriesCollection[2].Values.Add(MyTranslateTransform.OffsetZ);
-            if(SeriesCollection[0].Values.Count > 30)
+            //Console.WriteLine("X: {0}, Y: {1}, Z:{2}", MyTranslateTransform.OffsetX, MyTranslateTransform.OffsetY, MyTranslateTransform.OffsetZ);
+            //SeriesCollection[0].Values.Add(MyTranslateTransform.OffsetX);
+            //SeriesCollection[1].Values.Add(MyTranslateTransform.OffsetY);
+            //SeriesCollection[2].Values.Add(MyTranslateTransform.OffsetZ);
+
+            if (licznik_punktow_animacji > ARRAY_SIZE - 1)
             {
-                SeriesCollection[0].Values.Clear();
-                SeriesCollection[1].Values.Clear();
-                SeriesCollection[2].Values.Clear();
+                cvX.AddRange(valuesX);
+                cvY.AddRange(valuesY);
+                cvZ.AddRange(valuesZ);
+
+                //SeriesCollection[0].Values.Add(cvX);
+                //SeriesCollection[1].Values.Add(cvY);
+                //SeriesCollection[2].Values.Add(cvZ);
+
+                licznik_punktow_animacji = 0;
+                //cvX.Clear();
+                //cvY.Clear();
+                //cvZ.Clear();
+                //SeriesCollection[0].Values.AddRange(((IEnumerable<T>)valuesY).GetEnumerator());
+                //SeriesCollection[0].Values.AddRange(valuesX[]);
+
             }
 
+            valuesX[licznik_punktow_animacji] = MyTranslateTransform.OffsetX;
+            valuesY[licznik_punktow_animacji] = MyTranslateTransform.OffsetY;
+            valuesZ[licznik_punktow_animacji] = MyTranslateTransform.OffsetZ;
 
             licznik_punktow_animacji += 1;
         }

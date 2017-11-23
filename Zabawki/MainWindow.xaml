@@ -112,7 +112,7 @@
         <!--#endregion-->
         
         <!--#region Wykres-->
-        <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="4"/>
+        <lvc:CartesianChart Hoverable="False" DataTooltip="{x:Null}" DisableAnimations="True" Series="{Binding SeriesCollection}" Grid.Row="4"/>
         <!--#endregion-->
         
         <!--#region Pasek statusu-->
