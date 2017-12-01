@@ -20,6 +20,7 @@
         </Style>
     </Window.Resources>
 
+    
     <Grid Name="mainGrid" MouseWheel="Grid_MouseWheel" MouseUp="Grid_MouseUp" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
@@ -30,16 +31,8 @@
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0" Height="25px"  Padding="2px" HorizontalAlignment="Stretch" VerticalAlignment="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Save view?" />
-            </MenuItem>
-            <MenuItem Header="Model">
-                <MenuItem Header="Load 3D model"></MenuItem>
-            </MenuItem>
             <MenuItem Header="Animation">
                 <MenuItem Header="Load movement file" Click="loadMovementFile_Click" />
-                <MenuItem Header="Edit movement file" />
-                <MenuItem Header="Create new movement file" />
             </MenuItem>
         </Menu>
 
@@ -74,11 +67,6 @@
             </StackPanel>
         </Grid>
         
-        <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Image Source="/Icons/plus_sign.png" Width="30px" Height="30px"/>
-            <Image Source="/Icons/minus_sign.png" Width="30px" Height="30px"/>
-        </StackPanel>
-
         <!--#region Okno 3D--> 
         <Border Background="Aqua" Grid.Row="3">
             <Viewport3D Name="viewport3D1">
@@ -117,12 +105,6 @@
         
         <!--#region Pasek statusu-->
         <StatusBar Grid.Row="5">
-            <StatusBarItem>
-                <TextBlock>Plik ruchu:</TextBlock>
-            </StatusBarItem>
-            <StatusBarItem>
-                <TextBlock x:Name="model_path_text">E:\Google Drive\Uczelnia\Semestr 7\Praca dyplomowa\plik.3d</TextBlock>
-            </StatusBarItem>
         </StatusBar>
         <!--#endregion-->
     </Grid>
